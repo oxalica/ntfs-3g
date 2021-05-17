@@ -1564,6 +1564,8 @@ static int ntfs_fuse_read(const char *org_path, char *buf, size_t size,
 	s64 total = 0;
 	s64 max_read;
 
+	ntfs_log_info("ntfs_fuse_read called: %s size=%zu offset=%ld\n", path, size, (long)offset);
+
 	if (!size)
 		return 0;
 
@@ -2768,6 +2770,8 @@ static int ntfs_fuse_rmdir(const char *path)
 
 static int ntfs_fuse_utimens(const char *path, const struct timespec tv[2])
 {
+	ntfs_log_info("ntfs_fuse_utimens called: %s %ld %ld\n", path, tv[0].tv_nsec, tv[1].tv_nsec);
+
 	ntfs_inode *ni;
 	int res = 0;
 #if !KERNELPERMS | (POSIXACLS & !KERNELACLS)
@@ -2834,6 +2838,11 @@ static int ntfs_fuse_utime(const char *path, struct utimbuf *buf)
 	BOOL writeok;
 	struct SECURITY_CONTEXT security;
 #endif
+
+	if (buf)
+		ntfs_log_info("ntfs_fuse_utime called: %s atime=%ld mtime=%ld\n", path, buf.actime, buf.modtime);
+	else
+		ntfs_log_info("ntfs_fuse_utime called: %s NULL\n", path);
 
 	if (ntfs_fuse_is_named_data_stream(path))
 		return -EINVAL; /* n/a for named data streams. */
