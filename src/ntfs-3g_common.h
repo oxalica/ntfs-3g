@@ -94,6 +94,7 @@ enum {
 	OPT_EFS_RAW,
 	OPT_POSIX_NLINK,
 	OPT_SPECIAL_FILES,
+	OPT_STRICTATIME,
 } ;
 
 			/* Option flags */

@@ -84,6 +84,9 @@ const struct DEFOPTION optionlist[] = {
 	{ "noatime", OPT_NOATIME, FLGOPT_BOGUS },
 	{ "atime", OPT_ATIME, FLGOPT_BOGUS },
 	{ "relatime", OPT_RELATIME, FLGOPT_BOGUS },
+#ifdef MS_STRICTATIME
+	{ "strictatime", OPT_STRICTATIME, FLGOPT_BOGUS },
+#endif
 	{ "delay_mtime", OPT_DMTIME, FLGOPT_DECIMAL | FLGOPT_OPTIONAL },
 	{ "rw", OPT_RW, FLGOPT_BOGUS },
 	{ "fake_rw", OPT_FAKE_RW, FLGOPT_BOGUS },
@@ -301,6 +304,7 @@ char *parse_mount_options(ntfs_fuse_context_t *ctx,
 				ctx->atime = ATIME_DISABLED;
 				break;
 			case OPT_ATIME :
+			case OPT_STRICTATIME :
 				ctx->atime = ATIME_ENABLED;
 				break;
 			case OPT_RELATIME :
@@ -551,7 +555,7 @@ char *parse_mount_options(ntfs_fuse_context_t *ctx,
 			/* The atime options exclude each other */
 	if (ctx->atime == ATIME_RELATIVE && ntfs_strappend(&ret, "relatime,"))
 		goto err_exit;
-	else if (ctx->atime == ATIME_ENABLED && ntfs_strappend(&ret, "atime,"))
+	else if (ctx->atime == ATIME_ENABLED && ntfs_strappend(&ret, "strictatime,"))
 		goto err_exit;
 	else if (ctx->atime == ATIME_DISABLED && ntfs_strappend(&ret, "noatime,"))
 		goto err_exit;

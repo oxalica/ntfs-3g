@@ -233,6 +233,9 @@ static struct mount_flags mount_flags[] = {
     {"atime",   MS_NOATIME,     0, 1},
     {"noatime", MS_NOATIME,     1, 1},
     {"dirsync", MS_DIRSYNC,     1, 1},
+#ifdef MS_STRICTATIME
+    {"strictatime", MS_STRICTATIME, 1, 1},
+#endif
     {NULL,      0,              0, 0}
 };
 
@@ -354,7 +357,7 @@ static int do_mount(const char *mnt, char **typep, mode_t rootmode,
         fprintf(stderr, "%s: failed to allocate memory\n", progname);
         return -1;
     }
-
+    
     for (s = opts, d = optbuf; *s;) {
         unsigned len;
         const char *fsname_str = "fsname=";

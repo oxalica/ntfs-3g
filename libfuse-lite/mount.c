@@ -144,6 +144,9 @@ static const struct fuse_opt fuse_mount_opts[] = {
     FUSE_OPT_KEY("atime",               KEY_KERN_FLAG),
     FUSE_OPT_KEY("noatime",             KEY_KERN_FLAG),
 #endif /* __SOLARIS__ */
+#ifdef MS_STRICTATIME
+    FUSE_OPT_KEY("strictatime",         KEY_KERN_FLAG),
+#endif
     FUSE_OPT_KEY("-h",                  KEY_HELP),
     FUSE_OPT_KEY("--help",              KEY_HELP),
     FUSE_OPT_KEY("-V",                  KEY_VERSION),
@@ -213,6 +216,9 @@ static struct mount_flags mount_flags[] = {
     {"-m",      MS_NOMNTTAB,    1},  /* 1eb00 */
     {"-O",      MS_OVERLAY,     1},  /* 1eb0c */
 #endif /* __SOLARIS__ */
+#ifdef MS_STRICTATIME
+    {"strictatime", MS_STRICTATIME, 1, 1},
+#endif
     {NULL,      0,              0}
 };
 
